@@ -1,0 +1,134 @@
+*headlines.txt* *headlines*
+
+    ╔═╗  ╔═╗╔══════╗ ╔════╗ ╔═════╗ ╔═╗     ╔═╗╔══╗   ╔═╗╔══════╗╔══════╗~
+    ║ ║  ║ ║║ ╔════╝╔╝╔══╗╚╗║ ╔══╗╚╗║ ║     ║ ║║  ╚╗  ║ ║║ ╔════╝║ ╔════╝~
+    ║ ╚══╝ ║║ ╚══╗  ║ ╚══╝ ║║ ║  ║ ║║ ║     ║ ║║ ╔╗╚╗ ║ ║║ ╚══╗  ║ ╚════╗~
+    ║ ╔══╗ ║║ ╔══╝  ║ ╔══╗ ║║ ║  ║ ║║ ║     ║ ║║ ║╚╗╚╗║ ║║ ╔══╝  ╚════╗ ║~
+    ║ ║  ║ ║║ ╚════╗║ ║  ║ ║║ ╚══╝╔╝║ ╚════╗║ ║║ ║ ╚╗╚╝ ║║ ╚════╗╔════╝ ║~
+    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝~
+
+==============================================================================
+INTRO                                                         *headlines-intro*
+
+With |headlines|, you can quickly edit the top of your source files without
+losing your place in the current window.  |headlines| is similar to the
+|NarrowRegion| plugin, but is focused only on the top of your file.
+
+
+==============================================================================
+COMMAND                                                     *headlines-command*
+
+								  *:Headlines*
+:Headlines		Toggles the |headlines| split window.  If a window
+			already exists, switch to it instead.  This command is
+			the equivalent of |:q| if used within the |headlines|
+			window.
+
+			When closed, it is removed from the buffer list and
+			returns you to the source window.
+
+			See |headlines-notes| for details.
+
+==============================================================================
+CONFIG                                                       *headlines-config*
+
+							     *g:headlines_key*
+g:headlines_key		The key to map the headlines toggle.  An empty value
+			disables key mapping.
+
+			Default: `<localleader><localleader>`
+
+							  *g:headlines_height*
+g:headlines_height	The height of the popup window.  Regardless of what
+			this is set to, the popup window will take up no more
+			than half of the source window.
+
+			Default: `20`
+
+							 *g:headlines_markers*
+g:headlines_markers	A |dict| with |filetype| for keys and a {pattern} for
+			values.
+
+			If {pattern} is a string, the range will be from line
+			1 to the first matching line.
+
+			If {pattern} is a |list|, it must contain two patterns
+			for the beginning and ending line to display in the
+			popup window.
+
+			if {pattern} is a |Funcref| it will be called and it
+			must return a list of two line numbers for the
+			beginning and ending lines.  You won't need to restore
+			the cursor position, but you should avoid altering the
+			text in this function.
+
+			See `autocmd/headlines.vim` to see what patterns
+			already exist.
+
+						     *g:headlines_single_undo*
+g:headlines_single_undo
+			If enabled, all changes within the |headlines| popup
+			window will be merged as a single undo block in the
+			source buffer after you |:w| and |:q|.  If disabled,
+			each |:w| will result in a new undo block.
+
+			Default: `1`
+
+
+==============================================================================
+NOTES                                                         *headlines-notes*
+
+Opening the |headlines| will set the source buffer as |nomodifiable|.  This is
+because |headlines| needs to keep track of the lines it's replacing.  If you
+edit the source buffer then save the |headlines| buffer, you will very likely
+lose lines that shouldn't be removed.
+
+The source buffer will be updated when you |:write| in the |headlines| buffer.
+If you saved changes and |:quit|, the source buffer will be saved to disk.
+
+Note: Text displayed in the popup window will have their indentation
+normalized to make it easier to edit without worrying too much about
+indentation.  The indentation will be restored when writing back to the source
+buffer.
+
+While the |headlines| window is open, all windows that are displaying the
+source buffer will retain their positions after a |:write| to keep the context
+in view.  This is noted because you may find it disconcerting that the line
+numbers shift.
+
+After closing the |headlines| window, the origin window will switch back to
+the source buffer if it was switched out for any reason.
+
+|g:headlines_markers| allows you to setup any filetype you want.  The pattern
+to match the ending line almost always needs to start with `\n` to match the
+line just before.  Vim's regex patterns are very flexible, but pretty
+confusing.  If you aren't that great at regex, using a |Funcref| may be easier
+to deal with.
+
+
+==============================================================================
+LICENSE                                                     *headlines-license*
+
+The MIT License
+Copyright (c) 2016 Tommy Allen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+vim:tw=78:ts=8:noet:ft=help:norl:
