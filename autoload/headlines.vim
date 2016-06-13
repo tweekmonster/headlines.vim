@@ -235,4 +235,5 @@ function! headlines#toggle(...) abort
   augroup END
 
   runtime! ftplugin/headlines.vim
+  runtime! after/ftplugin/headlines.vim
 endfunction
