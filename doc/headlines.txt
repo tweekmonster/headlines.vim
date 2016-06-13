@@ -1,11 +1,11 @@
 *headlines.txt* *headlines*
 
-    ╔═╗  ╔═╗╔══════╗ ╔════╗ ╔═════╗ ╔═╗     ╔═╗╔══╗   ╔═╗╔══════╗╔══════╗~
-    ║ ║  ║ ║║ ╔════╝╔╝╔══╗╚╗║ ╔══╗╚╗║ ║     ║ ║║  ╚╗  ║ ║║ ╔════╝║ ╔════╝~
-    ║ ╚══╝ ║║ ╚══╗  ║ ╚══╝ ║║ ║  ║ ║║ ║     ║ ║║ ╔╗╚╗ ║ ║║ ╚══╗  ║ ╚════╗~
-    ║ ╔══╗ ║║ ╔══╝  ║ ╔══╗ ║║ ║  ║ ║║ ║     ║ ║║ ║╚╗╚╗║ ║║ ╔══╝  ╚════╗ ║~
-    ║ ║  ║ ║║ ╚════╗║ ║  ║ ║║ ╚══╝╔╝║ ╚════╗║ ║║ ║ ╚╗╚╝ ║║ ╚════╗╔════╝ ║~
-    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝~
+    ╔═╗  ╔═╗╔══════╗ ╔════╗ ╔═════╗ ╔═╗     ╔═╗╔══╗   ╔═╗╔══════╗╔══════╗    ~
+    ║ ║  ║ ║║ ╔════╝╔╝╔══╗╚╗║ ╔══╗╚╗║ ║     ║ ║║  ╚╗  ║ ║║ ╔════╝║ ╔════╝    ~
+    ║ ╚══╝ ║║ ╚══╗  ║ ╚══╝ ║║ ║  ║ ║║ ║     ║ ║║ ╔╗╚╗ ║ ║║ ╚══╗  ║ ╚════╗    ~
+    ║ ╔══╗ ║║ ╔══╝  ║ ╔══╗ ║║ ║  ║ ║║ ║     ║ ║║ ║╚╗╚╗║ ║║ ╔══╝  ╚════╗ ║    ~
+    ║ ║  ║ ║║ ╚════╗║ ║  ║ ║║ ╚══╝╔╝║ ╚════╗║ ║║ ║ ╚╗╚╝ ║║ ╚════╗╔════╝ ║    ~
+    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝    ~
 
 ==============================================================================
 INTRO                                                         *headlines-intro*
@@ -13,6 +13,15 @@ INTRO                                                         *headlines-intro*
 With |headlines|, you can quickly edit the top of your source files without
 losing your place in the current window.  |headlines| is similar to the
 |NarrowRegion| plugin, but is focused only on the top of your file.
+
+
+==============================================================================
+CONTENTS                                                   *headlines-contents*
+
+Command                  |headlines-command|
+Configuration            |headlines-config|
+Usage notes              |headlines-notes|
+License                  |headlines-license|
 
 
 ==============================================================================
@@ -73,6 +82,13 @@ g:headlines_single_undo
 			each |:w| will result in a new undo block.
 
 			Default: `1`
+
+						     *headlines-custom-config*
+
+When the |headlines| window is created, |:runtime| is used to load the
+`ftplugin/headlines.vim` and `after/ftplugin/headlines.vim` scripts.  In these
+scripts, you can customize the headlines window by adding buffer specific
+settings or keymaps.
 
 
 ==============================================================================
