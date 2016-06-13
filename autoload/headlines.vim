@@ -227,8 +227,12 @@ function! headlines#toggle(...) abort
     call winrestview(s:cursors[b:_filename])
   endif
 
-  autocmd! BufWriteCmd <buffer> call s:write_headlines()
-  autocmd! CursorMoved <buffer> call s:save_cursor()
-  autocmd! BufWinLeave <buffer> call s:close_headlines()
+  augroup headlines
+    autocmd! * <buffer>
+    autocmd BufWriteCmd <buffer> call s:write_headlines()
+    autocmd CursorMoved <buffer> call s:save_cursor()
+    autocmd BufWinLeave <buffer> call s:close_headlines()
+  augroup END
+
   runtime! ftplugin/headlines.vim
 endfunction
