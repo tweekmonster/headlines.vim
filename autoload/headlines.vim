@@ -3,7 +3,7 @@ let s:default_markers = {
       \ 'python': '\n\_^\%(@\|\%(def\|class\)\>\s\+\)\i\+',
       \ 'html': ['^\s*<head\>.*\_$\n\zs', '\n\_^\s*</head\>'],
       \ 'htmldjango': '\n\_^\s*\%({%\s*\<\%(load\|extends\)\>\_.\+\_$\|\_$\)\@!',
-      \ 'go': '\n\_^\s*func\>',
+      \ 'go': '\n\%(\_^//.*\n\)*\_^\s*func\>',
       \ 'vim': '\n\_^\s*fu\%[nction]\>'
       \ }
 
