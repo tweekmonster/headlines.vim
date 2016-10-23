@@ -43,7 +43,7 @@ function! s:get_headlines() abort
   endif
 
   let view = winsaveview()
-  keepjumps normal! gg
+  call cursor(1, 1)
 
   let line1 = 0
   let line2 = 0
@@ -53,7 +53,7 @@ function! s:get_headlines() abort
     let line2 = search(pattern, 'nW')
   elseif ptype == 2
     let funcview = winsaveview()
-    let [line1, line2] = call(pattern)
+    let [line1, line2] = call(pattern, [])
     call winrestview(funcview)
   elseif ptype == 3
     let line1 = search(pattern[0], 'ceW')
@@ -76,7 +76,6 @@ endfunction
 function! s:close_headlines() abort
   let last_win = winnr('$')
   if b:_window > last_win
-    echo 'wintf'
     return
   endif
 
@@ -151,18 +150,11 @@ function! headlines#toggle(...) abort
   if filename =~# '^headlines://'
     try
       quit
-    catch //
+    catch
       echohl ErrorMsg
       echo '[headlines]' matchstr(v:exception, '^Vim[^:]\+:\zs.*')
       echohl None
     endtry
-    " if &l:modified
-    "   echohl ErrorMsg
-    "   echo '[headlines] There are unsaved changes. Use :wq or :q! instead.'
-    "   echohl None
-    " else
-    "   wincmd c
-    " endif
     return
   endif
 
@@ -183,15 +175,11 @@ function! headlines#toggle(...) abort
   let height = min([height, winheight(0) / 2])
   let buf = winbufnr(0)
 
-  " Save view before opening the window
-  let view = winsaveview()
-
   " Protect the buffer from going out of sync
   setlocal nomodifiable
 
   " Setup headlines window
   silent! execute 'keepalt noautocmd aboveleft' height 'new'
-  let hwin = winnr()
   let swin = winnr('#')
   setlocal winfixwidth winfixheight buftype=acwrite bufhidden=wipe nobuflisted noswapfile
 
