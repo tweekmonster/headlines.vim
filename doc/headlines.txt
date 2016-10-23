@@ -100,7 +100,6 @@ edit the source buffer then save the |headlines| buffer, you will very likely
 lose lines that shouldn't be removed.
 
 The source buffer will be updated when you |:write| in the |headlines| buffer.
-If you saved changes and |:quit|, the source buffer will be saved to disk.
 
 Note: Text displayed in the popup window will have their indentation
 normalized to make it easier to edit without worrying too much about

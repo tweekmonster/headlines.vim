@@ -83,7 +83,6 @@ function! s:close_headlines() abort
   let buf = b:_buffer
   call s:win_focus(b:_window)
   execute 'noautocmd' buf 'bufdo setlocal modifiable'
-  write
 endfunction
 
 
