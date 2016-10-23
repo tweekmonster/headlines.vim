@@ -4,7 +4,8 @@ let s:default_markers = {
       \ 'html': ['^\s*<head\>.*\_$\n\zs', '\n\_^\s*</head\>'],
       \ 'htmldjango': '\n\_^\s*\%({%\s*\<\%(load\|extends\)\>\_.\+\_$\|\_$\)\@!',
       \ 'go': '\n\%(\_^//.*\n\)*\_^\s*func\>',
-      \ 'vim': '\n\_^\s*fu\%[nction]\>'
+      \ 'vim': '\n\_^\s*fu\%[nction]\>',
+      \ 'markdown': '^\zs\(+++\|---\)\n\_.\{-}\n\zs\1',
       \ }
 
 
