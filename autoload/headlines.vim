@@ -9,7 +9,7 @@ let s:default_markers = {
 
 
 function! s:save_cursor()
-  let s:cursors[b:_filename] = winsaveview()
+  let s:cursors[b:_hl.filename] = winsaveview()
 endfunction
 
 
@@ -75,12 +75,12 @@ endfunction
 
 function! s:close_headlines() abort
   let last_win = winnr('$')
-  if b:_window > last_win
+  if b:_hl.window > last_win
     return
   endif
 
-  let buf = b:_buffer
-  call s:win_focus(b:_window)
+  let buf = b:_hl.buffer
+  call s:win_focus(b:_hl.window)
   execute 'noautocmd' buf 'bufdo setlocal modifiable'
 endfunction
 
@@ -93,11 +93,12 @@ function! s:write_headlines() abort
 
   setlocal nomodified
   let hbuf = winbufnr(0)
-  let sbuf = b:_buffer
+  let sbuf = b:_hl.buffer
 
   " Restore indentation
-  let new_lines = map(getline(1, '$'), '(v:val !~# ''^\s*$'' ? repeat(b:_indent_char, b:_indent) : '''').v:val')
-  let cur_lines = getbufline(sbuf, b:_lines[0], b:_lines[1])
+  let new_lines = map(getline(1, '$'),
+        \ '(v:val !~# ''^\s*$'' ? repeat(b:_hl.indent_char, b:_hl.indent) : '''').v:val')
+  let cur_lines = getbufline(sbuf, b:_hl.lines[0], b:_hl.lines[1])
 
   if string(new_lines) == string(cur_lines)
     " Nothing to change
@@ -105,12 +106,13 @@ function! s:write_headlines() abort
     return
   endif
 
-  let delta = (line('$') - 1) - (b:_lines[1] - b:_lines[0])
+  let delta = (line('$') - 1) - (b:_hl.lines[1] - b:_hl.lines[0])
 
   let bwin = winnr()
   let undopoint = !exists('b:undopoint')
+  let lines = b:_hl.lines
 
-  call s:win_focus(b:_window)
+  call s:win_focus(b:_hl.window)
   execute sbuf 'bufdo setlocal modifiable'
 
   " Save all window views related to the buffer
@@ -119,8 +121,6 @@ function! s:write_headlines() abort
     let views[win].topline += delta
     let views[win].lnum += delta
   endfor
-
-  let lines = getbufvar(hbuf, '_lines')
 
   if get(g:, 'headlines_single_undo', 1)
     if undopoint
@@ -140,7 +140,7 @@ function! s:write_headlines() abort
 
   call s:restore_views(views)
   call s:win_focus(bwin)
-  let b:_lines[1] += delta
+  let b:_hl.lines[1] += delta
 endfunction
 
 
@@ -190,15 +190,18 @@ function! headlines#toggle(...) abort
   let &l:undolevels = -1
   let lines = getbufline(buf, line1, line2)
 
-  let b:_filename = fnamemodify(filename, ':p')
-  let b:_window = swin
-  let b:_buffer = buf
-  let b:_lines = [line1, line2]
-
   " Get the lowest indent level
   let min_indent = min(filter(map(copy(lines), 'match(v:val, ''^\s*\_$\@!\zs'')'), 'v:val != -1'))
-  let b:_indent = min_indent
-  let b:_indent_char = &l:expandtab ? ' ' : "\t"
+
+  let b:_hl = {
+        \ 'filename': fnamemodify(filename, ':p'),
+        \ 'window': swin,
+        \ 'buffer': buf,
+        \ 'lines': [line1, line2],
+        \ 'indent': min_indent,
+        \ 'indent_char': &l:expandtab ? ' ' : "\t",
+        \ }
+
   " Strip mininum indent from all the lines.
   call map(lines, 'v:val[min_indent:]')
 
@@ -215,8 +218,8 @@ function! headlines#toggle(...) abort
   execute 'setlocal statusline=%#HeadlinesStatusLabel#'
         \.substitute(' Headlines %* '.filename.' %m %=L%l/%L: %c', ' ', '\\ ', 'g')
 
-  if has_key(s:cursors, b:_filename)
-    call winrestview(s:cursors[b:_filename])
+  if has_key(s:cursors, b:_hl.filename)
+    call winrestview(s:cursors[b:_hl.filename])
   endif
 
   augroup headlines
