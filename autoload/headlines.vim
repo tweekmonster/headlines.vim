@@ -69,7 +69,7 @@ function! s:get_headlines() abort
     return [0, 0]
   endif
 
-  return [line1, line2]
+  return [line1, prevnonblank(line2)]
 endfunction
 
 
