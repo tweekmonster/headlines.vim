@@ -88,6 +88,11 @@ endfunction
 
 
 function! s:write_headlines() abort
+  " The only event that should be triggered is TextChanged on the source
+  " buffer.
+  let ei = &eventignore
+  set eventignore=all
+
   setlocal nomodified
   let hbuf = winbufnr(0)
   let sbuf = b:_buffer
@@ -121,22 +126,21 @@ function! s:write_headlines() abort
   if get(g:, 'headlines_single_undo', 1)
     if undopoint
       " Force an undo point to join with
-      normal! ix
-      normal! x
+      execute "normal! a\<space>\<bs>"
       call setbufvar(hbuf, 'undopoint', 1)
     endif
 
     undojoin
   endif
 
-  execute lines[0] 'delete _' ((lines[1] - lines[0]) + 1)
-  call append(lines[0] - 1, new_lines)
+  execute 'silent' lines[0] 'delete _' ((lines[1] - lines[0]) + 1)
+  silent call append(lines[0] - 1, new_lines)
+  let &eventignore = ei
+  doautocmd TextChanged
   setlocal nomodifiable
 
   call s:restore_views(views)
-
   call s:win_focus(bwin)
-
   let b:_lines[1] += delta
 endfunction
 
