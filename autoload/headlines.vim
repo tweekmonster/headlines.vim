@@ -49,14 +49,14 @@ function! s:get_headlines() abort
   let line1 = 0
   let line2 = 0
   let ptype = type(pattern)
-  if ptype == 1
+  if ptype == type('')
     let line1 = 1
     let line2 = search(pattern, 'nW')
-  elseif ptype == 2
+  elseif ptype == type(function('tr'))
     let funcview = winsaveview()
     let [line1, line2] = call(pattern, [])
     call winrestview(funcview)
-  elseif ptype == 3
+  elseif ptype == type([])
     let line1 = search(pattern[0], 'ceW')
     if line1
       let line2 = search(pattern[1], 'W')
