@@ -7,10 +7,7 @@ augroup headlines
 augroup END
 
 
-" Ugly on purpose at the moment
-highlight headlines_bg ctermfg=0 ctermbg=3
-highlight headlines_label ctermfg=0 ctermbg=6
-
+highlight default link HeadlinesStatusLabel WildMenu
 
 nnoremap <silent> <Plug>(HeadlinesToggle) :<c-u>call headlines#toggle()<cr>
 

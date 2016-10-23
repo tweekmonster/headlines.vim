@@ -211,8 +211,8 @@ function! headlines#toggle(...) abort
   endif
   silent execute 'file '.hbufname
 
-  " TODO: Make this less ugly
-  execute 'setlocal statusline=%#headlines_label#'.substitute(' Headlines %#headlines_bg# '.filename.' %m %=L%l/%L: %c', ' ', '\\ ', 'g')
+  execute 'setlocal statusline=%#HeadlinesStatusLabel#'
+        \.substitute(' Headlines %* '.filename.' %m %=L%l/%L: %c', ' ', '\\ ', 'g')
 
   if has_key(s:cursors, b:_filename)
     call winrestview(s:cursors[b:_filename])
