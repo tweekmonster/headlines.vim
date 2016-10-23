@@ -101,6 +101,7 @@ function! s:write_headlines() abort
 
   if string(new_lines) == string(cur_lines)
     " Nothing to change
+    let &eventignore = ei
     return
   endif
 
