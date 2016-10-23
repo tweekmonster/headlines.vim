@@ -5,7 +5,7 @@ let s:default_markers = {
       \ 'htmldjango': '\n\_^\s*\%({%\s*\<\%(load\|extends\)\>\_.\+\_$\|\_$\)\@!',
       \ 'go': '\n\%(\_^//.*\n\)*\_^\s*func\>',
       \ 'vim': '\n\_^\s*fu\%[nction]\>',
-      \ 'markdown': '^\zs\(+++\|---\)\n\_.\{-}\n\zs\1',
+      \ 'markdown': function('headlines#markdown#find'),
       \ }
 
 
@@ -38,8 +38,10 @@ endfunction
 
 
 function! s:get_headlines() abort
-  let pattern = get(get(g:, 'headlines_markers', s:default_markers), &l:filetype, '')
-  if empty(pattern)
+  let ft = &l:filetype
+  let s:_pattern = get(get(g:, 'headlines_markers', s:default_markers), ft, '')
+  if empty(s:_pattern)
+    unlet! s:_pattern
     return [0, 0]
   endif
 
@@ -48,21 +50,28 @@ function! s:get_headlines() abort
 
   let line1 = 0
   let line2 = 0
-  let ptype = type(pattern)
+  let ptype = type(s:_pattern)
   if ptype == type('')
     let line1 = 1
-    let line2 = search(pattern, 'nW')
+    let line2 = search(s:_pattern, 'nW')
   elseif ptype == type(function('tr'))
     let funcview = winsaveview()
-    let [line1, line2] = call(pattern, [])
+    let ret = call(s:_pattern, [])
+    if len(ret) > 1
+      let [line1, line2] = ret[:1]
+      if len(ret) > 2
+        let ft = ret[-1]
+      endif
+    endif
     call winrestview(funcview)
   elseif ptype == type([])
-    let line1 = search(pattern[0], 'ceW')
+    let line1 = search(s:_pattern[0], 'ceW')
     if line1
-      let line2 = search(pattern[1], 'W')
+      let line2 = search(s:_pattern[1], 'W')
     endif
   endif
 
+  unlet! s:_pattern
   call winrestview(view)
 
   if !line2 || line2 == line('$')
@@ -70,7 +79,7 @@ function! s:get_headlines() abort
     return [0, 0]
   endif
 
-  return [line1, prevnonblank(line2)]
+  return [line1, prevnonblank(line2), ft]
 endfunction
 
 
@@ -166,7 +175,7 @@ function! headlines#toggle(...) abort
   endif
 
   let height = a:0 ? a:1 : get(g:, 'headlines_height', 20)
-  let [line1, line2] = s:get_headlines()
+  let [line1, line2, ft] = s:get_headlines()
   if !line1 || !line2
     echohl WarningMsg
     echo 'Headlines could not be found.'
@@ -210,7 +219,7 @@ function! headlines#toggle(...) abort
   setlocal nomodified
   let &l:undolevels = ul
 
-  execute 'setlocal filetype='.getbufvar(buf, '&l:filetype')
+  execute 'setlocal filetype='.ft
   if exists('w:airline_active')
     let w:airline_disabled = 1
   endif

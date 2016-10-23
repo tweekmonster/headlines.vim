@@ -69,7 +69,9 @@ g:headlines_markers	A |dict| with |filetype| for keys and a {pattern} for
 			must return a list of two line numbers for the
 			beginning and ending lines.  You won't need to restore
 			the cursor position, but you should avoid altering the
-			text in this function.
+			text in this function.  An optional third list item
+			can be returned to set the 'filetype' in the headlines
+			popup window.
 
 			See `autocmd/headlines.vim` to see what patterns
 			already exist.
