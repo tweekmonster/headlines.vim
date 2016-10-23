@@ -35,11 +35,6 @@ in the original buffer.
 * The cursor position in the `headlines` window is saved independently.
 
 
-## Todo
-
-* [ ] Make popup window statusline not ugly.
-
-
 ## License
 
 MIT
