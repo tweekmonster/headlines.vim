@@ -159,6 +159,14 @@ endfunction
 
 function! headlines#toggle(...) abort
   let filename = expand('%')
+
+  if empty(filename)
+    echohl WarningMsg
+    echo 'Headlines cannot be displayed for unnamed files.'
+    echohl None
+    return
+  endif
+
   let hbufname = 'headlines://'.filename
 
   if filename =~# '^headlines://'
