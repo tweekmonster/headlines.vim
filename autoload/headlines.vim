@@ -8,6 +8,7 @@ let s:default_markers = {
       \ 'markdown': function('headlines#markdown#find'),
       \ 'javascript': function('headlines#javascript#find'),
       \ 'coffee': function('headlines#coffee#find'),
+      \ 'ruby': '\n\_^\%(module\|def\|class\)\>',
       \ }
 
 
