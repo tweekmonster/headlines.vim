@@ -74,7 +74,7 @@ function! s:get_headlines() abort
   unlet! s:_pattern
   call winrestview(view)
 
-  if !line2 || line2 == line('$')
+  if line2 <= 0 || line2 >= line('$')
     " An entire file can't be the headlines
     return [0, 0]
   endif
