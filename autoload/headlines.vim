@@ -42,7 +42,7 @@ function! s:get_headlines() abort
   let s:_pattern = get(get(g:, 'headlines_markers', s:default_markers), ft, '')
   if empty(s:_pattern)
     unlet! s:_pattern
-    return [0, 0]
+    return [0, 0, ft]
   endif
 
   let view = winsaveview()
@@ -76,7 +76,7 @@ function! s:get_headlines() abort
 
   if line2 <= 0 || line2 >= line('$')
     " An entire file can't be the headlines
-    return [0, 0]
+    return [0, 0, ft]
   endif
 
   return [line1, prevnonblank(line2), ft]
