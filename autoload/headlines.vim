@@ -6,6 +6,8 @@ let s:default_markers = {
       \ 'go': '\n\%(\_^//.*\n\)*\_^\s*func\>',
       \ 'vim': '\n\_^\s*fu\%[nction]\>',
       \ 'markdown': function('headlines#markdown#find'),
+      \ 'javascript': function('headlines#javascript#find'),
+      \ 'coffee': function('headlines#coffee#find'),
       \ }
 
 
